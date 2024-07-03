@@ -1,0 +1,59 @@
+AnomalyTransformer(
+  (embedding): DataEmbedding(
+    (value_embedding): TokenEmbedding(
+      (tokenConv): Conv1d(8, 512, kernel_size=(3,), stride=(1,), padding=(1,), bias=False, padding_mode=circular)
+    )
+    (position_embedding): PositionalEmbedding()
+    (dropout): Dropout(p=0, inplace=False)
+  )
+  (encoder): Encoder(
+    (attn_layers): ModuleList(
+      (0-2): 3 x EncoderLayer(
+        (attention): AttentionLayer(
+          (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          (inner_attention): AnomalyAttention(
+            (dropout): Dropout(p=0, inplace=False)
+          )
+          (query_projection): Linear(in_features=512, out_features=512, bias=True)
+          (key_projection): Linear(in_features=512, out_features=512, bias=True)
+          (value_projection): Linear(in_features=512, out_features=512, bias=True)
+          (sigma_projection): Linear(in_features=512, out_features=8, bias=True)
+          (out_projection): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (conv1): Conv1d(512, 512, kernel_size=(1,), stride=(1,))
+        (conv2): Conv1d(512, 512, kernel_size=(1,), stride=(1,))
+        (norm1): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (norm2): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (dropout): Dropout(p=0, inplace=False)
+      )
+    )
+    (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+  )
+  (projection): Linear(in_features=512, out_features=8, bias=True)
+)
+
+
+loss: [-37.257799644780356, -45.789028074683216, -46.607113101618076, -46.85758508511675, -47.02984926177234, -47.211976865442786, -47.347008961003, -47.48964362415841, -47.63361527667782, -47.778351295285105]
+
+time: 0.36110687255859375
+
+ID : 0
+lr : 0.0001
+num_epochs : 10
+k : 3
+win_size : 50
+input_c : 8
+output_c : 8
+batch_size : 16
+dataset : space
+mode : train
+data_path : dataset/space
+model_save_path : checkpoints
+step : 50
+test_model : None
+e_layers : 3
+n_heads : 8
+d_ff : 512
+d_model : 512
+dropout : 0
+quantile_treshold : 0.999937
