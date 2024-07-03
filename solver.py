@@ -28,11 +28,11 @@ class Solver(object):
 
         self.train_loader = get_loader_segment(self.data_path, batch_size=self.batch_size, win_size=self.win_size,
                                                mode="train",
-                                               dataset=self.dataset,step=self.step, modality=self.mode)
+                                               dataset=self.dataset,step=self.step, modality=self.mode, names=self.dataset_name)
 
         self.test_loader = get_loader_segment(self.data_path, batch_size=self.batch_size, win_size=self.win_size,
                                               mode="test",
-                                              dataset=self.dataset,step=self.step, modality=self.mode)
+                                              dataset=self.dataset,step=self.step, modality=self.mode, names=self.dataset_name)
         
         print("train_loader: ", len(self.train_loader))
         print("test_loader: ", len(self.test_loader))
