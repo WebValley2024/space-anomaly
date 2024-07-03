@@ -4,23 +4,25 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
+
+
 config_train = {
     
-    'ID': 2,                            # folder ID
+    'ID': 4,                            # folder ID
     'lr': 0.0001,                       # learning rate
-    'num_epochs': 100,                 # number of epochs
+    'num_epochs': 100,                  # number of epochs
     'k': 3,                             # k value
     'win_size': 50,                     # window size    
-    'input_c': 8,                       # input features
-    'output_c': 8,                      # output features
+    'input_c': 2,                       # input features
+    'output_c': 2,                      # output features
     'batch_size': 16,                   # batch size
     'dataset': 'space',                 # dataset
     'mode': 'train',                    # mode
-    'data_path': 'dataset/space',       # data path
+    'data_path': 'dataset/space/2',     # data path
     'model_save_path': 'checkpoints',   # model save path
     'step':50,                          # stride    
     'test_model': None,                 # is_testing
-    'dataset_name': ['HEPP_L_data_test.csv', 'HEPP_L_data_train.csv'], # dataset name 0=test, 1=train
+    'dataset_name': ['HEPP_D_data_test.csv', 'HEPP_D_data_train.csv'], # dataset name 0=test, 1=train
     
     # model parameters
     'e_layers': 3,                          

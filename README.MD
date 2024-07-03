@@ -10,6 +10,8 @@ Time, col1, col2, col3, ...
 
 ## Requirements
 
+Python 3.11.7
+
 utils/requirements.txt
 
 ## Usage

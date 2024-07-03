@@ -1,0 +1,60 @@
+AnomalyTransformer(
+  (embedding): DataEmbedding(
+    (value_embedding): TokenEmbedding(
+      (tokenConv): Conv1d(2, 512, kernel_size=(3,), stride=(1,), padding=(1,), bias=False, padding_mode=circular)
+    )
+    (position_embedding): PositionalEmbedding()
+    (dropout): Dropout(p=0, inplace=False)
+  )
+  (encoder): Encoder(
+    (attn_layers): ModuleList(
+      (0-2): 3 x EncoderLayer(
+        (attention): AttentionLayer(
+          (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+          (inner_attention): AnomalyAttention(
+            (dropout): Dropout(p=0, inplace=False)
+          )
+          (query_projection): Linear(in_features=512, out_features=512, bias=True)
+          (key_projection): Linear(in_features=512, out_features=512, bias=True)
+          (value_projection): Linear(in_features=512, out_features=512, bias=True)
+          (sigma_projection): Linear(in_features=512, out_features=8, bias=True)
+          (out_projection): Linear(in_features=512, out_features=512, bias=True)
+        )
+        (conv1): Conv1d(512, 512, kernel_size=(1,), stride=(1,))
+        (conv2): Conv1d(512, 512, kernel_size=(1,), stride=(1,))
+        (norm1): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (norm2): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (dropout): Dropout(p=0, inplace=False)
+      )
+    )
+    (norm): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+  )
+  (projection): Linear(in_features=512, out_features=2, bias=True)
+)
+
+
+loss: [-42.406555125587865, -46.73272681236267, -47.615318398726615, -47.82844661411486, -48.0639769403558, -48.30144154398065, -48.542640560551696, -48.69557013009724, -48.77866560534427, -48.80518037394474, -48.841419107035584, -48.854949511979754, -48.87828367634823, -48.87572427799827, -48.89631290184824, -48.916714203985116, -48.911958154879116, -48.91697165840551, -48.93092076401962, -48.916027771799186, -48.930940665696795, -48.93044875797472, -48.93980280976547, -48.92937582417538, -48.91886634575693, -48.91085238205759, -48.914828162444266, -48.910613913285104, -48.901142597198486, -48.9278994861402, -48.941473735006234, -48.93534080605758, -48.94564735262018, -48.94723264794601, -48.95975340040106, -48.960144908804644, -48.95756494371515, -48.95218913178695, -48.95611906051636, -48.93782303207799, -48.955225229263306, -48.95157746264809, -48.96912884712219, -48.96226839015358, -48.96018375848469, -48.951676858098885, -48.95549836911653, -48.936537529292856, -48.94985171368248, -48.94817327198229, -48.95962100279959, -48.955847903301844, -48.94527711366352, -48.94615761857284, -48.96284142293428, -48.9647072239926, -48.958132819125524, -48.95318750331276, -48.96726190416437, -48.97287071378607, -48.96593976020813, -48.95064768038298, -48.952856829291896, -48.94545543821234, -48.93775540903995, -48.95768184410898, -48.96775086302506, -48.96952247619629, -48.95792956101267, -48.96412464192039, -48.97028788767363, -48.97336821807058, -48.95255918251841, -48.97057094072041, -48.974619702288976, -48.961235887125916, -48.95776689679999, -48.97093258405987, -48.972841237720694, -48.977792162644235, -48.97215144257797, -48.97577196673343, -48.97050512464423, -48.97254216043573, -48.963154115174945, -48.94247417700918, -48.93333133898283, -48.95014281021921, -48.961281199204294, -48.95520153798555, -48.95686595063461, -48.95706753981741, -48.96896490297819, -48.961817289653574, -48.969637607273306, -48.97448887323078, -48.9756421038979, -48.97309524134586, -48.97153248284992, -48.968373461773524]
+
+time: 0.15713143348693848
+
+ID : 4
+lr : 0.0001
+num_epochs : 100
+k : 3
+win_size : 50
+input_c : 2
+output_c : 2
+batch_size : 16
+dataset : space
+mode : train
+data_path : dataset/space/2
+model_save_path : checkpoints
+step : 50
+test_model : None
+dataset_name : ['HEPP_D_data_test.csv', 'HEPP_D_data_train.csv']
+e_layers : 3
+n_heads : 8
+d_ff : 512
+d_model : 512
+dropout : 0
+quantile_treshold : 0.999937
