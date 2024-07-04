@@ -15,7 +15,7 @@ import pickle
 
 
 class SpaceLoader(object):
-    def __init__(self, data_path, win_size, step, mode="train", name=[]):
+    def __init__(self, data_path, win_size, step, mode="train", name=[], columns=1):
         
         self.mode = mode
         self.step = step
@@ -23,7 +23,7 @@ class SpaceLoader(object):
         self.scaler = StandardScaler()
         
         data = pd.read_csv(data_path +"/"+ name[1])
-        data = data.values[:, 1:]
+        data = data.values[:, 1:1+columns]
 
         data = np.nan_to_num(data)
 
@@ -32,7 +32,7 @@ class SpaceLoader(object):
         
         test_data = pd.read_csv(data_path +"/"+ name[0])
 
-        test_data = test_data.values[:, 1:]#98000
+        test_data = test_data.values[:, 1:1+columns]#98000
         test_data = np.nan_to_num(test_data)
 
         self.test = self.scaler.transform(test_data)
@@ -263,10 +263,9 @@ class SMDSegLoader(object):
                 self.test_labels[index // self.step * self.win_size:index // self.step * self.win_size + self.win_size])
 
 
-def get_loader_segment(data_path, batch_size, win_size=100, step=100, mode='train', dataset='KDD', modality="train", names=[]):
+def get_loader_segment(data_path, batch_size, win_size=100, step=100, mode='train', dataset='KDD', modality="train", names=[], columns=1):
     
-    dataset = SpaceLoader(data_path, win_size, step, mode=mode, name=names)
-
+    dataset = SpaceLoader(data_path, win_size, step, mode=mode, name=names,columns=columns)
 
     shuffle = False
     
@@ -276,5 +275,5 @@ def get_loader_segment(data_path, batch_size, win_size=100, step=100, mode='trai
     data_loader = DataLoader(dataset=dataset,
                              batch_size=batch_size,
                              shuffle=shuffle,
-                             num_workers=0)
+                             num_workers=0,)
     return data_loader

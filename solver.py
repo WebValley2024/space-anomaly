@@ -28,11 +28,11 @@ class Solver(object):
 
         self.train_loader = get_loader_segment(self.data_path, batch_size=self.batch_size, win_size=self.win_size,
                                                mode="train",
-                                               dataset=self.dataset,step=self.step, modality=self.mode, names=self.dataset_name)
+                                               dataset=self.dataset,step=self.step, modality=self.mode, names=self.dataset_name, columns=self.input_c)
 
         self.test_loader = get_loader_segment(self.data_path, batch_size=self.batch_size, win_size=self.win_size,
                                               mode="test",
-                                              dataset=self.dataset,step=self.step, modality=self.mode, names=self.dataset_name)
+                                              dataset=self.dataset,step=self.step, modality=self.mode, names=self.dataset_name, columns=self.input_c)
         
         print("train_loader: ", len(self.train_loader))
         print("test_loader: ", len(self.test_loader))
@@ -61,6 +61,8 @@ class Solver(object):
         logfile = os.path.join(self.savedir, "log.txt")
         self.log = open(logfile, "a")
 
+
+
     def build_model(self):
 
         self.model = AnomalyTransformer(win_size=self.win_size, enc_in=self.input_c, c_out=self.output_c, e_layers=self.e_layers, n_heads=self.n_heads, d_ff=self.d_ff, d_model=self.d_model, dropout=self.dropout) # e_layers=3, n_heads=8, d_ff=512, d_model=512, dropout=0
@@ -79,13 +81,21 @@ class Solver(object):
 
         train_steps = len(self.train_loader)
 
+        l1_A_ls = []
+        l2_A_ls = []
+        l3_A_ls = []
+
         for epoch in range(self.num_epochs):
             iter_count = 0
             loss1_list = []
 
             epoch_time = time.time()
             self.model.train()
-            
+
+            l1_A = 0
+            l2_A = 0
+            l3_A = 0
+
             for i, input_data in enumerate(self.train_loader):
 
                 self.optimizer.zero_grad()
@@ -121,6 +131,10 @@ class Solver(object):
                 loss1 = rec_loss - self.k * series_loss
                 loss2 = rec_loss + self.k * prior_loss
 
+                l1_A = (l1_A * i + loss1.item()) / (i + 1)
+                l2_A = (l2_A * i + loss2.item()) / (i + 1)
+                l3_A = (l3_A * i + rec_loss.item()) / (i + 1)
+
                 if (i + 1) % 100 == 0:
                     speed = (time.time() - time_now) / iter_count
                     left_time = speed * ((self.num_epochs - epoch) * train_steps - i)
@@ -134,7 +148,20 @@ class Solver(object):
 
                 self.optimizer.step()
             
+            l1_A_ls.append(l1_A)
+            l2_A_ls.append(l2_A)
+            l3_A_ls.append(l3_A)
+
             self.loss_save_4.append(np.average(loss1_list))
+
+            with open(os.path.join(self.savedir, 'loss.txt'), 'w') as f:
+                f.write(str(l1_A_ls))
+                f.write('\n')
+                f.write(str(l2_A_ls))
+                f.write('\n')
+                f.write(str(l3_A_ls))
+                f.write('\n')
+                f.write(str(self.loss_save_4))
 
 
             print("Epoch: {} cost time: {}".format(epoch + 1, time.time() - epoch_time))
@@ -148,6 +175,8 @@ class Solver(object):
         
         torch.save(self.model.state_dict(), os.path.join(self.savedir, str(self.dataset) + '_checkpoint.pth'))
         
+        
+
         plt.plot(self.loss_save_4)
         plt.savefig(os.path.join(self.savedir, 'loss.png'))
 
