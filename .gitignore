@@ -133,3 +133,15 @@ not test_parser.ipynb
 anomalyes.csv
 dataset
 
+converter
+
+!test_503
+!test_502
+!test_501
+!test_500
+!test_305
+!test_304
+!test_303
+!test_302
+!test_301
+!test_300

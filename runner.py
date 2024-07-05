@@ -72,6 +72,13 @@ def plot_res(config_train, tresh, tresh_folder):
 
     test_set=pd.read_csv(test_path)
     train_set=pd.read_csv(train_path)
+
+    if 'time' not in test_set.keys():
+        test_set.rename(columns={test_set.keys()[0]:'time'}, inplace=True)
+    
+    if 'time' not in train_set.keys():
+        train_set.rename(columns={train_set.keys()[0]:'time'}, inplace=True)
+
     test_set.set_index('time', inplace=True)
     train_set.set_index('time', inplace=True)
 
@@ -117,7 +124,7 @@ config_train = {
     
     'ID': 8,                            # folder ID
     'lr': 0.0001,                       # learning rate
-    'num_epochs': 3,#1500,                  # number of epochs
+    'num_epochs': 1,#1500,                  # number of epochs
     'k': 3,                             # k value
     'win_size': 90,                     # window size    
     'input_c': 10,                       # input features
@@ -162,8 +169,12 @@ config_train = {
 # [['HEPP_L_split_test.csv', 'HEPP_L_split_train.csv'],"dataset/space/4", 64]
 # [['HEPP_LD_split_test.csv', 'HEPP_LD_split_train.csv'],"dataset/space/5", 66]
 
+# [['EFD_var_nomean_1esp_test.csv', 'EFD_var_nomean_1esp_train.csv'], "dataset/space/6", 3]
+# [['EFD_var_nomean_full_test.csv', 'EFD_var_nomean_full_train.csv'], "dataset/space/7", 9]
+# [['EFD_HEPPL_test.csv', 'EFD_HEPPL_train.csv'], "dataset/space/8", 11]
+# [['EFD_HEPPL_HEPD_test.csv', 'EFD_HEPPL_HEPD_train.csv'], "dataset/space/9", 13]
 
-dataset_names = [[['HEPP_L_data_test_1.csv', 'HEPP_L_data_train_1.csv'], "dataset/space/1", 2], [['HEPP_L_data_test_1.csv', 'HEPP_L_data_train_1.csv'], "dataset/space/1", 8],[['HEPP_D_data_test.csv', 'HEPP_D_data_train.csv'], "dataset/space/2", 2],[['HEPP_LD_test.csv', 'HEPP_LD_train.csv'], "dataset/space/3", 10],[['HEPP_L_split_test.csv', 'HEPP_L_split_train.csv'],"dataset/space/4", 64],[['HEPP_LD_test_split.csv', 'HEPP_LD_train_split.csv'],"dataset/space/5", 66]]
+dataset_names = [[['EFD_var_nomean_1esp_test.csv', 'EFD_var_nomean_1esp_train.csv'], "dataset/space/6", 3], [['EFD_var_nomean_full_test.csv', 'EFD_var_nomean_full_train.csv'], "dataset/space/7", 9], [['EFD_HEPPL_test.csv', 'EFD_HEPPL_train.csv'], "dataset/space/8", 11], [['EFD_HEPPL_HEPD_test.csv', 'EFD_HEPPL_HEPD_train.csv'], "dataset/space/9", 13]]
 
 wind_size = [90]
 dff = [512]
@@ -172,7 +183,7 @@ heads = [10]
 e_layers = [3]
 k_val=[0.1]
 
-index = 200
+index = 500
 
 for i in dataset_names:
     for w in wind_size:
